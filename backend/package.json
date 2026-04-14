@@ -1,0 +1,13 @@
+{
+    "name": "mcmap-node",
+    "version": "1.0.0",
+    "description": "Minecraft Bedrock world map renderer",
+    "main": "src/main.js",
+    "type": "module",
+    "dependencies": {
+        "mcbe-leveldb": "^1.10.2",
+        "express": "^4.18.2",
+        "sharp": "^0.33.2",
+        "ws": "^8.16.0"
+    }
+}
