@@ -122,3 +122,24 @@ export function getHeight(col, bx, bz) {
   if (!col.heightmap) return 64  // default sea level
   return col.heightmap[bx]?.[bz] ?? 64
 }
+
+/**
+ * Ambil biome ID untuk posisi lokal (bx, bz) di permukaan.
+ * Pakai slice biome index ke-4 (sekitar Y=0, overworld surface).
+ */
+export function getBiome(col, bx, bz) {
+  if (!col.biomes || col.biomes.length === 0) return 0
+
+  // Tiap slice = 4x4x4 biome section, ada 24 slice vertikal
+  // Slice index 4 ≈ Y=0 (overworld surface)
+  const sliceIndex = Math.min(4, col.biomes.length - 1)
+  const slice = col.biomes[sliceIndex]
+  if (!slice) return 0
+
+  // Kalau values null → semua pakai palette[0]
+  if (!slice.values) return slice.palette[0] ?? 0
+
+  // Posisi dalam 4x4 grid horizontal (biome pakai 4-block resolution)
+  const idx = (Math.floor(bz / 4) * 4) + Math.floor(bx / 4)
+  return slice.palette[slice.values[idx] ?? 0] ?? 0
+}

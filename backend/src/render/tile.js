@@ -9,7 +9,9 @@
  */
 
 import sharp from 'sharp'
-import { getHeight } from '../chunk/scanner.js'
+import { blockColor, biomeColor } from './colors.js'
+import { getHeight, getBiome } from '../chunk/scanner.js'
+
 
 export const PIXELS_PER_BLOCK = 4
 export const CHUNK_PIXELS     = 16 * PIXELS_PER_BLOCK  // 64px per chunk
@@ -98,8 +100,8 @@ export async function renderChunkTile(col) {
 
   for (let bx = 0; bx < 16; bx++) {
     for (let bz = 0; bz < 16; bz++) {
-      const y          = getHeight(col, bx, bz)
-      const baseColor  = heightToColor(y)
+      const biomeId    = getBiome(col, bx, bz)
+      const baseColor  = biomeColor(biomeId)
       const brightness = getSlopeBrightness(col.heightmap, bx, bz)
       const color      = applyBrightness(baseColor, brightness)
 
@@ -139,8 +141,8 @@ export async function renderRegionTile(cols, regionX, regionZ, regionSize = 32) 
 
       for (let bx = 0; bx < 16; bx++) {
         for (let bz = 0; bz < 16; bz++) {
-          const y          = getHeight(col, bx, bz)
-          const baseColor  = heightToColor(y)
+          const biomeId    = getBiome(col, bx, bz)
+          const baseColor  = biomeColor(biomeId)
           const brightness = getSlopeBrightness(col.heightmap, bx, bz)
           const color      = applyBrightness(baseColor, brightness)
 
